@@ -1,0 +1,12 @@
+{
+    "name": "project/newsnow",
+    "description": "NewsNow project for intro2web course",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "tarikkadic",
+            "email": "tarik.kadic@stu.ibu.edu.ba"
+        }
+    ],
+    "require": {}
+}
