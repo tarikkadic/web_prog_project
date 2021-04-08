@@ -2,23 +2,18 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
+require_once dirname(__FILE__)."/dao/AccountDao.class.php";
 
+$dao = new AccountDao();
 
-$user_dao = new UserDao();
+$dao->add_account([
+  "username" => "Regular user",
+  "created" => date("Y-m-d H:i:s")
+]);
 
-//$user = $user_dao->get_user_by_id(1);
+$accounts = $dao->get_all_accounts();
 
-$user1 = [
-  "username" => "newest user1",
-  "email" => "newestuser1@gmail.com",
-  "account_id" => 1,
-  "password" => "sifra123"
-];
-
-$user = $user_dao->add_user($user1);
-
-//get_user_by_email("tarik.kadic@gmail.com");
-
-print_r($user);
+print_r($accounts);
 ?>
