@@ -6,13 +6,11 @@ $user_dao = new UserDao();
 //$user = $user_dao->get_user_by_id(1);
 
 $user1 = [
-  "username" => "user123",
-  "email" => "user123@gmail.com",
-  "password" => "12345",
+  "password" => "password123"
 ];
 
 
-$user = $user_dao->update_user(4, $user1);
+$user = $user_dao->update_user_by_email("user123@gmail.com", $user1);
 
 //get_user_by_email("tarik.kadic@gmail.com");
 
