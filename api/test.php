@@ -17,7 +17,7 @@ $dao = new ArticleDao();
  //    "category" => "COVID-19"
  // ]);
 
-$articles = $dao->get_article_by_category("COVID-19");
+$articles = $dao->get_article_comments(3);
 
 print_r($articles);
 
