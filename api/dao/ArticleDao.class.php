@@ -1,10 +1,10 @@
 <?php
 require_once dirname(__FILE__)."/BaseDao.class.php";
 
-class AccountDao extends BaseDao{
+class ArticleDao extends BaseDao{
 
-  public function add_account($account){
-    return $this->insert("accounts", $account);
+  public function add_article($article){
+    return $this->insert("articles", $article);
   }
 
   public function update_acc($id, $account){
@@ -19,4 +19,5 @@ class AccountDao extends BaseDao{
     return $this->query("SELECT * FROM accounts", []);
   }
 }
- ?>
+
+?>

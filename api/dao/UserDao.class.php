@@ -23,5 +23,9 @@ class UserDao extends BaseDao{
     $this->update("users", $email, $user, "email");
   }
 
+  public function get_reported_users(){
+    return $this->query("SELECT * FROM users WHERE reported = :reported", ["reported" => 1]);
+  }
+
 }
  ?>

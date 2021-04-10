@@ -4,16 +4,27 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
-require_once dirname(__FILE__)."/dao/AccountDao.class.php";
+require_once dirname(__FILE__)."/dao/CommentDao.class.php";
 
-$dao = new AccountDao();
+$dao = new CommentDao();
 
-$dao->add_account([
-  "username" => "Regular user",
-  "created" => date("Y-m-d H:i:s")
-]);
+// $dao->add_user([
+//   "username" => "user",
+//   "created" => date("Y-m-d H:i:s"),
+//   "email" => "newuser@gmail.com",
+//   "password" => "12345",
+//   "reported" => 1
+// ]);
 
-$accounts = $dao->get_all_accounts();
+// $user = $dao->get_reported_users();
+// //
+// print_r($user);
 
-print_r($accounts);
+$comments = $dao->get_comments_by_user_email("user@gmail.com");
+
+print_r($comments);
+
+//$accounts = $dao->get_all_accounts();
+
+//print_r($accounts);
 ?>
