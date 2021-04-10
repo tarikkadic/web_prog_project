@@ -5,26 +5,22 @@ error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/CommentDao.class.php";
+require_once dirname(__FILE__)."/dao/ArticleDao.class.php";
 
-$dao = new CommentDao();
+$dao = new ArticleDao();
 
-// $dao->add_user([
-//   "username" => "user",
-//   "created" => date("Y-m-d H:i:s"),
-//   "email" => "newuser@gmail.com",
-//   "password" => "12345",
-//   "reported" => 1
-// ]);
+ $dao->add_article([
+    "title" => "newnews",
+    "subtitle"  => "subtitle12",
+    "body" => "this is a second article",
+    "created" => date("Y-m-d H:i:s"),
+    "category" => "COVID-19"
+ ]);
 
-// $user = $dao->get_reported_users();
-// //
-// print_r($user);
+$articles = $dao->get_all_recent_articles();
 
-$comments = $dao->get_comments_by_user_email("user@gmail.com");
+print_r($articles);
 
-print_r($comments);
 
-//$accounts = $dao->get_all_accounts();
 
-//print_r($accounts);
 ?>

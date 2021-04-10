@@ -7,16 +7,16 @@ class ArticleDao extends BaseDao{
     return $this->insert("articles", $article);
   }
 
-  public function update_acc($id, $account){
-    $this->update("accounts", $id, $account);
+  public function update_article($id, $article){
+    $this->update("articles", $id, $article);
   }
 
-  public function get_acc_by_id($id){
-    return $this->query_unique("SELECT * FROM accounts WHERE id = :id", ["id" => $id]);
+  public function get_article_by_category($category){
+    return $this->query("SELECT * FROM articles WHERE category = :category", ["category" => $category]);
   }
 
-  public function get_all_accounts(){
-    return $this->query("SELECT * FROM accounts", []);
+  public function get_all_recent_articles(){
+    return $this->query("SELECT * FROM articles ORDER BY created DESC", []);
   }
 }
 
