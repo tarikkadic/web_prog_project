@@ -9,15 +9,15 @@ require_once dirname(__FILE__)."/dao/ArticleDao.class.php";
 
 $dao = new ArticleDao();
 
- $dao->add_article([
-    "title" => "newnews",
-    "subtitle"  => "subtitle12",
-    "body" => "this is a second article",
-    "created" => date("Y-m-d H:i:s"),
-    "category" => "COVID-19"
- ]);
+ // $dao->add_article([
+ //    "title" => "newnews",
+ //    "subtitle"  => "subtitle12",
+ //    "body" => "this is a second article",
+ //    "created" => date("Y-m-d H:i:s"),
+ //    "category" => "COVID-19"
+ // ]);
 
-$articles = $dao->get_all_recent_articles();
+$articles = $dao->get_article_by_category("COVID-19");
 
 print_r($articles);
 

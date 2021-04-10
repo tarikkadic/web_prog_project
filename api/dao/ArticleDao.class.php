@@ -12,7 +12,7 @@ class ArticleDao extends BaseDao{
   }
 
   public function get_article_by_category($category){
-    return $this->query("SELECT * FROM articles WHERE category = :category", ["category" => $category]);
+    return $this->query("SELECT * FROM articles WHERE category = :category ORDER BY created DESC", ["category" => $category]);
   }
 
   public function get_all_recent_articles(){
