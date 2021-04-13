@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 require_once dirname(__FILE__)."/../config.php";
 
 class BaseDao{
@@ -73,6 +70,10 @@ class BaseDao{
 
   public function get_by_id($id){
     return $this->query_unique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
+  }
+
+  public function get_all(){
+    return $this->query("SELECT * FROM".$this->table, []);
   }
 
 }
