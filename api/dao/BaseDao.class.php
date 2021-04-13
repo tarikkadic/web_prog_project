@@ -1,11 +1,17 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once dirname(__FILE__)."/../config.php";
 
 class BaseDao{
+
   protected $connection;
 
-  public function __construct(){
+  private $table;
 
+  public function __construct($table){
+    $this->table = $table;
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -14,7 +20,7 @@ class BaseDao{
     }
   }
 
-  public function insert($table, $entity){
+  protected function insert($table, $entity){
     $query = "INSERT INTO ${table} (";
     foreach ($entity as $column => $value) {
       $query .= $column .", ";
@@ -33,7 +39,7 @@ class BaseDao{
     return $entity;
   }
 
-  public function update($table, $id, $entity, $id_column = "id"){
+  protected function execute_update($table, $id, $entity, $id_column = "id"){
     $query = "UPDATE ${table} SET ";
     foreach ($entity as $name => $value){
       $query .= $name ."= :". $name. ", ";
@@ -46,16 +52,29 @@ class BaseDao{
     $stmt->execute($entity);
   }
 
-  public function query($query, $params){
+  protected function query($query, $params){
     $stmt = $this->connection->prepare($query);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function query_unique($query, $params){
+  protected function query_unique($query, $params){
     $result = $this->query($query, $params);
     return reset($result);
   }
+
+  public function add($entity){
+    return $this->insert($this->table, $entity);
+  }
+
+  public function update($id, $entity){
+    $this->execute_update($this->table, $id, $entity);
+  }
+
+  public function get_by_id($id){
+    return $this->query_unique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
+  }
+
 }
 
 ?>

@@ -3,6 +3,10 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class ArticleDao extends BaseDao{
 
+  public function __construct(){
+    parent::__construct("articles");
+  }
+
   public function add_article($article){
     return $this->insert("articles", $article);
   }

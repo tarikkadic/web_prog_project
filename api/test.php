@@ -7,7 +7,7 @@ require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/CommentDao.class.php";
 require_once dirname(__FILE__)."/dao/ArticleDao.class.php";
 
-$dao = new ArticleDao();
+$dao = new UserDao();
 
  // $dao->add_article([
  //    "title" => "newnews",
@@ -17,9 +17,16 @@ $dao = new ArticleDao();
  //    "category" => "COVID-19"
  // ]);
 
-$articles = $dao->get_article_comments(3);
+ $dao->update(4, [
+   "username" => "test11",
+   "email" => "test@test.com",
+   "password" => "test12345",
+   "created" => date("Y-m-d H:i:s")
+ ])
 
-print_r($articles);
+// $articles = $dao->get_article_comments(3);
+//
+// print_r($articles);
 
 
 
