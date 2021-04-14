@@ -7,15 +7,21 @@ error_reporting(E_ALL);
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/dao/UserDao.class.php';
 
-Flight::register('userDao', 'UserDao');
+/* Utility function for reading query parameters from URL */
+Flight::map('query', function($name, $default_val = NULL){
+  $request = Flight::request();
 
-require_once dirname(__FILE__)."/routes/users.php";
+  $query_param = @$request->query->getData()[$name];
+  $query_param = $query_param ? $query_param : $default_val;
 
-Flight::route('/', function(){
-    echo 'hello world!';
+  return $query_param;
 });
 
+/* Register DAO layer */
+Flight::register('userDao', 'UserDao');
 
+/* Include all routes */
+require_once dirname(__FILE__)."/routes/users.php";
 
 Flight::start();
 

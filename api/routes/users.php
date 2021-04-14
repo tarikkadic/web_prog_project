@@ -1,16 +1,20 @@
 <?php
 
 Flight::route('GET /users', function(){
-    Flight::json(Flight::userDao()->get_all(0, 2));
+  $offset = Flight::query('offset', 0);
+  $limit = Flight::query('limit', 10);
+
+
+  Flight::json(Flight::userDao()->get_all($offset, $limit));
 });
 
 Flight::route('GET /users/@id', function($id){
-    Flight::json(Flight::userDao()->get_user_by_id($id));
+  Flight::json(Flight::userDao()->get_user_by_id($id));
 });
 
 Flight::route('POST /users', function(){
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::userDao()->add($data));
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::userDao()->add($data));
 });
 
 Flight::route('PUT /users/@id', function($id){
