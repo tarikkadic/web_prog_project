@@ -1,10 +1,9 @@
 <?php
 
 require_once dirname(__FILE__).'/../dao/UserDao.class.php';
+require_once dirname(__FILE__).'/BaseService.class.php';
 
-class UserService{
-
-  private $dao;
+class UserService extends BaseService {
 
   public function __construct(){
     $this->dao = new UserDao();
@@ -16,6 +15,11 @@ class UserService{
     }else{
       return $this->dao->get_all($offset, $limit);
     }
+  }
+
+  public function add($user){
+    if(!isset($user['username'])) throw new Exception("Username is not set!");
+    return parent::add($user);
   }
 }
 

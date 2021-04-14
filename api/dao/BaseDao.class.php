@@ -9,7 +9,7 @@ require_once dirname(__FILE__)."/../config.php";
 * @author Tarik Kadic
 */
 
-class BaseDao{
+class BaseDao {
 
   protected $connection;
 
