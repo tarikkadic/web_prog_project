@@ -3,7 +3,7 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 require_once dirname(__FILE__)."/UserDao.class.php";
 require_once dirname(__FILE__)."/ArticleDao.class.php";
 
-class CommentDao extends BaseDao{
+class CommentDao extends BaseDao {
 
   public function __construct(){
     parent::__construct("comments");
