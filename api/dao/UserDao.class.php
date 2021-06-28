@@ -7,12 +7,15 @@ class UserDao extends BaseDao {
     parent::__construct("users");
   }
 
-  public function get_users($search, $offset, $limit){
-    return $this->query("SELECT * FROM users
-                         WHERE LOWER(username)
-                         LIKE CONCAT('%', :username, '%')
-                         LIMIT ${limit}
-                         OFFSET ${offset}",
+  public function get_users($search, $offset, $limit, $order){
+
+    list($order_column, $order_direction) = self::parse_order($order);
+
+    return $this->query("SELECT *
+                         FROM users
+                         WHERE LOWER(username) LIKE CONCAT('%', :username, '%')
+                         ORDER BY ${order_column} ${order_direction}
+                         LIMIT ${limit} OFFSET ${offset}",
                          ["username" => strtolower($search)]);
   }
 
@@ -20,10 +23,10 @@ class UserDao extends BaseDao {
     return $this->query_unique("SELECT * FROM users WHERE token = :token", ["token" => $token]);
   }
 
-    // public function get_user_by_email($email){
-    //   return $this->query_unique("SELECT * FROM users WHERE email = :email", ["email" => $email]);
-    // }
-    //
+    public function get_user_by_email($email){
+      return $this->query_unique("SELECT * FROM users WHERE email = :email", ["email" => $email]);
+    }
+
      public function get_user_by_id($id){
        return $this->query_unique("SELECT * FROM users WHERE id = :id", ["id" => $id]);
     }

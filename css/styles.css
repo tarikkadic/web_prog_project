@@ -1,0 +1,215 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.container {
+  width: 75%;
+  margin: 0 auto;
+}
+
+header {
+  top: 0;
+  border-bottom-style: outset;
+  border-bottom-color: #0303B0;
+  border-bottom-width: 2px;
+  margin: 0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+body {
+  margin: 0;
+}
+
+#coronavirus {
+  background-image: url("/assets/cov.png");
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.logo {
+  float: left;
+  padding: 10px 0;
+}
+
+nav {
+  float: right;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 60px;
+  padding-top: 30px;
+  position: relative;
+}
+
+nav a {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #000000
+}
+
+nav a:hover {
+  color: #0303B0;
+}
+
+.article_picture {
+  margin: 0;
+  display: block;
+  align-items: center;
+}
+
+nav a::before {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 0%;
+  top: 0;
+  background-color: #E18700;
+  position: absolute;
+  transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+  width: 100%
+}
+
+li {
+  text-shadow: 1px 1px 2px grey;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding-top: 150px;
+  padding-bottom: 150px;
+  width: 100%;
+  margin: auto;
+}
+
+.categories_main {
+  width: 50%;
+  float: right;
+  align-items: right;
+}
+
+.categories_small {
+  margin: 0;
+  float: right;
+  width: 30%;
+  justify-content: center;
+  align-items: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.cat_small {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.title {
+  width: 100%;
+}
+
+.cat_title {
+  padding-left: 50px;
+  font-size: 20px;
+  font-family: 'Noto Sans JP', sans-serif;
+  text-decoration: overline #E18700;
+}
+
+.article {
+  padding: 50px;
+  margin: auto;
+}
+
+.art_title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+}
+
+.art_subtitle {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.articles {
+  text-align: center;
+}
+
+.article_title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.article_subtitle {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  font-style: italic;
+}
+
+.pic{
+  text-align: center;
+}
+
+.article_text {
+  padding: 30px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+}
+
+.main_art_title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.main_art_sub {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.small_art_title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.small_art_sub {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  font-style: italic;
+}

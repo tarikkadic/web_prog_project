@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <title>NewsNow</title>
+  </head>
+  <body>
+
+    <header id="header">
+      <div class="container">
+
+        <a href="index.html"><img src="assets/logo.png" width="100" height="60" alt="logo" class="logo"></a>
+
+        <nav>
+          <ul>
+            <li><a href="#">World</a></li>
+            <li><a href="#">Politics</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Coronavirus</a></li>
+            <li><a href="#">Lifestyle</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="login.html">Log In</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </header>
+
+    <form class="box" action="index.html" method="post">
+      <h1>Log In</h1>
+      <input id="email" type="text" name="email" placeholder="Email" required>
+      <input id="password" type="password" name="password" placeholder="Password" minlength="6" required>
+      <button id="login_link" type="button" name="submit" onclick="doLogin();">Log In</button>
+      <p>Don't have an account?</p>
+      <button type="button" name="Register" onclick="window.location.href='register.html'">Register</button>
+    </form>
+
+  </body>
+
+  <script type="text/javascript">
+
+  $(function(){
+    if(window.localStorage.getItem("token")){
+      window.location = "index.html";
+    }
+  });
+    function doLogin(){
+
+      var login_info = {
+        email : $("#email").val(),
+        password : $("#password").val()
+      };
+
+      $("#login_link").prop('disabled', true);
+      $.post("http://localhost/project/api/login", login_info).done(function( data ){
+        window.localStorage.setItem("token", data.token);
+        window.location = "index.html";
+      }).fail(function(error){
+        $("#login_link").prop('disabled', false);
+        console.log(error);
+        alert(error.responseJSON.message);
+      });
+
+      console.log(login_info);
+    }
+  </script>
+
+</html>
