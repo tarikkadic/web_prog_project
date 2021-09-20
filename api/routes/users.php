@@ -28,13 +28,12 @@ Flight::route('GET /users', function(){
   $search = Flight::query('search');
   $order = Flight::query('order', "-id");
 
-
   Flight::json(Flight::userService()->get_users($search, $offset, $limit, $order));
 });
 
 /**
  * @OA\Get(
- *  path="/users/{id}", tags={"user"}, security={{"ApiKeyAuth":{}}},
+ *  path="/users/{id}", tags={"user"},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", example=1),
  *     @OA\Response(response="200", description="Fetch individual user")
  * )
@@ -45,7 +44,7 @@ Flight::route('GET /users/@id', function($id){
 
 /**
  * @OA\Post(
- *     path="/users",
+ *     path="/users", tags={"user"},
  *     @OA\Response(response="200", description="List all users from DB with set id")
  * )
  */
@@ -56,7 +55,7 @@ Flight::route('POST /users', function(){
 
 /**
  * @OA\Put(
- *     path="/users/{id}",
+ *     path="/users/{id}", tags={"user"},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", example=1),
  *     @OA\Response(response="200", description="Update user based on id")
  * )
@@ -68,6 +67,10 @@ Flight::route('POST /users', function(){
 
 Flight::route('PUT /users/@id', function($id){
   Flight::json(Flight::userService()->update_account(Flight::get('user'), $id, Flight::request()->data->getData()));
+});
+
+Flight::route('PUT /users/suspend/@id', function($id){
+  Flight::json(Flight::userService()->user_suspend($id));
 });
 
 /**

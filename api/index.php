@@ -7,13 +7,15 @@ error_reporting(E_ALL);
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
 require_once dirname(__FILE__).'/services/ArticleService.class.php';
+require_once dirname(__FILE__).'/services/ReportedCommentService.class.php';
+require_once dirname(__FILE__).'/services/CommentService.class.php';
 
 
 //Flight::set('flight.log_errors', TRUE);
 
- Flight::map('error', function(Exception $ex){
-   Flight::json(["message" => $ex->getMessage()], $ex->getCode());
-});
+//  Flight::map('error', function(Exception $ex){
+//    Flight::json(["message" => $ex->getMessage()], $ex->getCode());
+// });
 
 /* Utility function for reading query parameters from URL */
 Flight::map('query', function($name, $default_val = NULL){
@@ -38,11 +40,15 @@ Flight::route('GET /', function(){
 /* Register Business logic layer services */
 Flight::register('userService', 'UserService');
 Flight::register('articleService', 'ArticleService');
+Flight::register('reportedcommentService', 'ReportedCommentService');
+Flight::register('commentService', 'CommentService');
 
 /* Include all routes */
 require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/articles.php";
+require_once dirname(__FILE__)."/routes/reported_comments.php";
+require_once dirname(__FILE__)."/routes/comments.php";
 
 Flight::start();
 ?>

@@ -12,9 +12,10 @@ class ArticleService extends BaseService {
 
   public function add_article($article){
     $article = parent::add([
+      "image" =>$article["image"],
       "title" => $article["title"],
       "subtitle" => $article["subtitle"],
-      "body" => $article["body"],
+      "article_body" => $article["article_body"],
       "created" => date(Config::DATE_FORMAT),
       "category" => $article["category"]
     ]);
@@ -22,7 +23,18 @@ class ArticleService extends BaseService {
     return $article;
   }
 
-  //public function update_article($article)
-}
+  public function article_category($category){
+    return $this->dao->get_article_by_category($category);
+  }
 
+
+  public function get_all_articles(){
+    return $this->dao->get_all_recent_articles();
+  }
+
+  public function get_article_comments($id){
+    return $this->dao->get_all_article_comments($id);
+  }
+
+}
 ?>

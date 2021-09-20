@@ -15,16 +15,18 @@ class BaseDao {
 
   private $table;
 
-  public static function parse_order($order){
-    switch (substr($order, 0, 1)) {
-      case '-': $order_direction = "ASC"; break;
-      case '+': $order_direction = "DESC"; break;
-      default: throw new Exception("Invalid order format. - or + required."); break;
-    };
+  public function parse_order($order){
+   switch(substr($order, 0, 1)){
+     case '-': $order_direction = "ASC"; break;
+     case '+': $order_direction = "DESC"; break;
+     default: throw new Exception("Invalid order format. First character should be either + or -"); break;
+   };
 
-    $order_column = substr($order, 1);
-    return [$order_column, $order_direction];
-  }
+   // Filter SQL injection attacks on column name
+   $order_column = trim($this->connection->quote(substr($order, 1)),"'");
+
+   return [$order_column, $order_direction];
+ }
 
   public function __construct($table){
     $this->table = $table;
@@ -56,17 +58,17 @@ class BaseDao {
   }
 
   protected function execute_update($table, $id, $entity, $id_column = "id"){
-    $query = "UPDATE ${table} SET ";
-    foreach ($entity as $name => $value){
-      $query .= $name ."= :". $name. ", ";
-    }
+     $query = "UPDATE ${table} SET ";
+     foreach($entity as $name => $value){
+       $query .= $name ."= :". $name. ", ";
+     }
+     $query = substr($query, 0, -2);
+     $query .= " WHERE ${id_column} = :id";
 
-    $query = substr($query, 0 , -2);
-    $query .= " WHERE ${id_column} = :id";
-    $stmt = $this->connection->prepare($query);
-    $entity["id"] = $id;
-    $stmt->execute($entity);
-  }
+     $stmt= $this->connection->prepare($query);
+     $entity['id'] = $id;
+     $stmt->execute($entity);
+   }
 
   protected function query($query, $params){
     $stmt = $this->connection->prepare($query);
@@ -91,13 +93,13 @@ class BaseDao {
     return $this->query_unique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
   }
 
-  public function get_all($offset = 0, $limit = 25, $order = "-id"){
-
+  public function get_all($offset = 0, $limit = 25, $order="-id"){
     list($order_column, $order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT * FROM ".$this->table."
-                        ORDER BY ${order_column} ${order_direction}
-                        LIMIT ${limit} OFFSET ${offset}", []);
+    return $this->query("SELECT *
+                         FROM ".$this->table."
+                         ORDER BY ${order_column} ${order_direction}
+                         LIMIT ${limit} OFFSET ${offset}", []);
   }
 
 }

@@ -1,0 +1,88 @@
+<div class="content-wrapper">
+  <div class="container">
+    <div class="col-sm-12">
+      <div class="card" data-aos="fade-up">
+        <div class="col-sm-12">
+          <form class="active-users" style="margin-top: 10px;" type="form">
+            <textarea id="comment-body" style="width: 100%;" name="comment" rows="3" placeholder="Comment"></textarea>
+            <button style="width: 100%;" type="button" class="btn btn-primary stick-right" onclick="post_comment();">Post comment</button>
+          </form>
+        </div><hr style="height: 0px; border: none; border-top: 1px solid black;">
+        <div id="article_comments" class="card-body">
+          <div>
+            <div class="col-sm-12">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var u = new URL(window.location.href);
+  var article_id = u.searchParams.get("article_id");
+  getComments(article_id);
+  var user_info = parse_jwt(window.localStorage.getItem("token"));
+  if(user_info.s == "SUSPENDED"){
+    $(".active-users").remove();
+  }
+
+
+  function getComments(article_id){
+    $.ajax({
+      url: "api/articles/"+article_id+"/comments",
+      type: "GET",
+      success: function(data){
+        var html = "";
+        for(var i = 0; i < data.length; i++){
+          html += '<div class="row article_box">'
+            +'<div class="col-sm-8 grid-margin">'
+              +'<h4 class="font-weight-200 mb-2">'+data[i].username+'</h4><br>'
+              +'<h3 class="font-weight-600 mb-2">'+data[i].comment_body+'</h3>'
+            +'</div></div>'
+            +'<button style="float: right; margin-right: 10px; background-color: #000000;" type="button" onclick="report('+data[i].id+');" class="btn btn-primary active-users">Report</button>'
+        }
+
+        $("#article_comments div").html(html);
+      }
+    });
+  }
+
+  function report(id){
+    $.ajax({
+      url: "api/comments/report/"+id,
+      type: "PUT",
+      data: {"id" : id},
+      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+      success: function(data){
+        console.log(data);
+        toastr.success("Comment reported!");
+      }
+    });
+  }
+
+  function post_comment(){
+    var comment_info = {
+      "user_id" : user_info.id,
+      "article_id" : article_id,
+      "comment_body" : document.getElementById("comment-body").value
+    };
+    $.ajax({
+      url: "api/comments",
+      type: "POST",
+      data: comment_info,
+      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+      success: function(data){
+        toastr.success("Comment posted!");
+        location.reload();
+        console.log();
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.log(jqXHR);
+      }
+    });
+  }
+
+</script>

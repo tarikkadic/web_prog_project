@@ -1,0 +1,67 @@
+<div class="content-wrapper">
+  <div class="container">
+    <div class="col-sm-12">
+      <div class="card" data-aos="fade-up">
+        <div class="card-body">
+              <table id="users_table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Status</th>
+			<th>Role</th>
+      <th></th>
+		</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+</table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  getUsers();
+
+  function getUsers(){
+    $.ajax({
+      url: "api/users",
+      type: "GET",
+      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+      success: function(data){
+        console.log(data);
+        var html = "";
+        for(var i = 0; i < data.length; i++){
+          html += '<tr>'
+      			+'<td>'+data[i].id+'</td>'
+      			+'<td>'+data[i].username+'</td>'
+      			+'<td>'+data[i].email+'</td>'
+      			+'<td>'+data[i].user_status+'</td>'
+      			+'<td>'+data[i].role+'</td>'
+            +'<td><button type="button" class="btn btn-primary nav-item" onclick="suspendUser('+data[i].id+');">Suspend</button></td>'
+      		  +'</tr>'
+        }
+        $("#users_table tbody").html(html);
+        $("#users_table").dataTable();
+      }
+    });
+  }
+
+function suspendUser(id){
+  $.ajax({
+    url: "api/users/suspend/"+id,
+    type: "PUT",
+    data: {"id" : id},
+    beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+    success: function(data){
+      toastr.success("User suspended!");
+    }
+  });
+}
+
+</script>

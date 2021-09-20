@@ -15,7 +15,7 @@ class UserService extends BaseService {
 
   public function get_users($search, $offset, $limit, $order){
     if($search){
-      return $this->dao->get_users($search, $offset, $limit, $order);
+      return $this->dao->get_users_param($search, $offset, $limit, $order);
     }else{
       return $this->dao->get_all($offset, $limit, $order);
     }
@@ -29,7 +29,7 @@ class UserService extends BaseService {
          "username"  => $user['username'],
          "email"  => $user['email'],
          "password"  => md5($user['password']),
-         "status" => "PENDING",
+         "user_status" => "PENDING",
          "reported" => "0",
          "role" => "USER",
          "created"  => date(Config::DATE_FORMAT),
@@ -54,7 +54,7 @@ class UserService extends BaseService {
 
     if (!isset($user['id'])) throw new Exception("Invalid token!", 400);
 
-    $this->dao->update($user['id'], ["status" => "ACTIVE", "token" => NULL]);
+    $this->dao->update($user['id'], ["user_status" => "ACTIVE", "token" => NULL]);
 
     // TODO: send email confirmation
 }
@@ -64,11 +64,11 @@ public function login($user){
 
   if(!isset($db_user['id'])) throw new Exception("User doesn't exist!", 400);
 
-  if($db_user['status'] != 'ACTIVE') throw new Exception("Account not active!", 400);
+  if($db_user['user_status'] != 'ACTIVE') throw new Exception("Account not active!", 400);
 
   if($db_user['password'] != md5($user['password'])) throw new Exception("Invalid password!", 400);
 
-  $jwt = \Firebase\JWT\JWT::encode(["id" => $db_user["id"], "r" => $db_user["role"]],"JWT SECRET");
+  $jwt = \Firebase\JWT\JWT::encode(["id" => $db_user["id"], "r" => $db_user["role"], "s" => $db_user["user_status"]],"JWT SECRET");
 
   return ["token" => $jwt];
 }
@@ -95,7 +95,9 @@ public function reset($user){
   $this->update($db_user['id'], ['password' => md5($user['password']), 'token' => NULL]);
 }
 
-//public function update_account($user, $id, )
+ public function user_suspend($id){
+   return $this->dao->do_suspend_user($id);
+ }
 
 }
  ?>

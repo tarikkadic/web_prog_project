@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__)."/BaseDao.class.php";
+  require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class UserDao extends BaseDao {
 
@@ -7,7 +7,7 @@ class UserDao extends BaseDao {
     parent::__construct("users");
   }
 
-  public function get_users($search, $offset, $limit, $order){
+  public function get_users_param($search, $offset, $limit, $order){
 
     list($order_column, $order_direction) = self::parse_order($order);
 
@@ -30,22 +30,10 @@ class UserDao extends BaseDao {
      public function get_user_by_id($id){
        return $this->query_unique("SELECT * FROM users WHERE id = :id", ["id" => $id]);
     }
-    //
-    // public function add_user($user){
-    //   return $this->insert("users", $user);
-    // }
-    //
-    // public function update_user($id, $user){
-    //   $this->update("users", $id, $user);
-    // }
-    //
-    // public function update_user_by_email($email, $user){
-    //   $this->update("users", $email, $user, "email");
-    // }
-    //
-    // public function get_reported_users(){
-    //   return $this->query("SELECT * FROM users WHERE reported = :reported", ["reported" => 1]);
-    //
+
+    public function do_suspend_user($id){
+      return $this->query("UPDATE users SET user_status = "."'SUSPENDED'"." WHERE id = :id ", ["id" => $id]);
+    }
 
 }
  ?>

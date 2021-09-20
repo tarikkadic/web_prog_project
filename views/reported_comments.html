@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+  <div class="container">
+    <div class="col-sm-12">
+      <div class="card" data-aos="fade-up">
+        <div class="card-body">
+          <div id="reported-comments-list" class="row">
+            <div class="col-lg-8">
+              <div class="row article_box">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+  getReportedComments();
+
+  function getReportedComments(){
+    $.ajax({
+      url: "api/reported_comments",
+      type: "GET",
+      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+      success: function(data){
+        console.log();
+        var html = "";
+        for(var i = 0; i < data.length; i++){
+          html += '<div class="row article_box">'
+                  +'<div class="col-sm-4 grid-margin">'
+                  +'<button style="margin-right: 10px; background-color: #2B8824;" type="button" onclick="on_approve('+data[i].id+')" class="btn btn-primary">Approve</button>'
+                  +'<button style="background-color: #C11919;" type="button" onclick="on_delete('+data[i].comment_id+','+data[i].id+')" class="btn btn-primary">Delete</button>'
+                  +'</div>'
+                  +'<div class="col-sm-8 grid-margin">'
+                    +'<h2 class="font-weight-600 mb-2">'
+                      +data[i].comment_body+'</h2>'
+                      +'<p class="fs-13 text-muted mb-0">'
+                      +'User: '+data[i].username+'</p>'
+                  +'<p class="fs-15 article_p">'
+                +'Article: '+data[i].title+'</p></div></div>'
+        }
+        $("#reported-comments-list div").html(html);
+      }
+    });
+  }
+
+  function delete_from_q(id){
+    $.ajax({
+      url: "api/reported_comments/approve/"+id,
+      type: "DELETE",
+      success: function(data){
+        getReportedComments();
+      }
+    });
+  }
+
+  function on_approve(id){
+    delete_from_q(id);
+  }
+
+  function on_delete(id, com_id){
+    $.ajax({
+      url: "api/comments/delete/"+id,
+      type: "PUT",
+      data: {"id" : id},
+      success: function(data){
+        delete_from_q(com_id);
+      }
+    });
+  }
+</script>

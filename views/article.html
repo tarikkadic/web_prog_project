@@ -1,0 +1,135 @@
+<div class="content-wrapper">
+  <div class="container">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-primary nav-item admin-stuff" data-toggle="modal" data-target="#article-update-modal">Update article</button>
+      <div class="card" data-aos="fade-up">
+        <div id="article_individual" class="card-body">
+          <div>
+            <div class="col-sm-12">
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary nav-item" onclick="location.href='#comments';">Comments</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="article-update-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Add article</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form type="form" id="update-article-modal">
+        <div class="form-group">
+          <label for="article-title" class="form-control-label">Title</label>
+          <input type="text" name="title" class="form-control" id="article-title" required>
+        </div>
+        <div class="form-group">
+          <label for="article-subtitle" class="form-control-label">Subtitle</label>
+          <textarea type="text" name="subtitle" class="form-control" id="article-subtitle" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="article-body" class="form-control-label">Article body</label>
+          <textarea class="form-control" name="article_body" id="article-body" required></textarea>
+        </div>
+        <label for="category">Category</label>
+        <select name="category" id="categories" required>
+          <option value="">Choose a category</option>
+          <option value="covid-19">COVID-19</option>
+          <option value="business">Business</option>
+          <option value="sport">Sport</option>
+          <option value="art">Art</option>
+          <option value="politics">Politics</option>
+          <option value="travel">Travel</option>
+        </select>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Update article</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+  var u = new URL(window.location.href);
+  var article_id = u.searchParams.get("article_id");
+  getArticle(article_id);
+  var user_info = parse_jwt(window.localStorage.getItem("token"));
+  if(user_info.r != "ADMIN"){
+    $('.admin-stuff').remove();
+  }
+
+  $("#update-article-modal").validate({
+    submitHandler: function(form, event){
+      console.log(article_id);
+      event.preventDefault();
+      console.log(jsonize_form($(form)));
+      updateArticle(jsonize_form($(form)), parseInt(article_id));
+      console.log(3);
+      $('#article-update-modal').modal('toggle');
+      console.log(3);
+    }
+  });
+
+  function getArticle(id){
+    $.ajax({
+      url: "api/articles/"+id,
+      type: "GET",
+      success: function(data){
+        var html = "";
+          html += '<div class="row">'
+                 +'<div class="col-sm-12">'
+                 +'<h1 style="text-align: center;" class="font-weight-600 mb-4">'+data.title+'</h1>'
+            +'</div></div>'
+        +'<div class="row">'
+          +'<div class="col-sm-12">'
+            +'<h1 style="text-align: center;" class="fs-16 text-muted mb-0">'+data.subtitle+'</h1><br>'
+          +'</div></div>'
+        +'<div class="row">'
+          +'<div class="col-sm-12">'
+            +'<img style="object-fit:scale-down; width:100%; height:100%;" src="'+data.image+'">'
+            +'</div></div><br>'
+        +'<div class="row">'
+            +'<div class="col-sm-12">'
+              +'<p style="white-space: pre-line">'+data.article_body+'</p>'
+            +'</div></div>'
+        $("#update-article-modal *[name='title']").val(data.title);
+        $("#update-article-modal *[name='subtitle']").val(data.subtitle);
+        $("#update-article-modal *[name='article_body']").val(data.article_body);
+        $("#article_individual div").html(html);
+      }
+    });
+
+  }
+
+  function updateArticle(article, article_id){
+    $.ajax({
+      url: "api/articles/"+article_id,
+      type: "PUT",
+      data: article,
+      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+      success: function(data){
+        console.log(4);
+        toastr.success("Article has been updated!");
+        console.log(5);
+        location.reload();
+        console.log(6);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.log(jqXHR);
+      }
+    });
+  }
+</script>

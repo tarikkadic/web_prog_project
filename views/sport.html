@@ -1,0 +1,54 @@
+<div class="content-wrapper">
+  <div class="container">
+    <div class="col-sm-12">
+      <div class="card" data-aos="fade-up">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <h1 class="font-weight-600 mb-4">
+                SPORT
+              </h1>
+            </div>
+          </div>
+          <div id="article_list_sport" class="row">
+            <div class="col-lg-8">
+              <div class="row article_box">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+  getArticles();
+
+  function getArticles(){
+    $.ajax({
+      url: "api/articles/category/sport",
+      type: "GET",
+      success: function(data){
+        console.log();
+        var html = "";
+        for(var i = 0; i < data.length; i++){
+          html += '<a style="text-decoration: none;" href="?article_id='+data[i].id+'#article"><div class="row article_box" >'
+                  +'<div class="col-sm-4 grid-margin">'
+                  +'<div class="rotate-img">'
+                    +'<img src="'+data[i].image+'" alt="thumb" class="img-fluid"/>'
+                  +'</div>'
+                  +'</div>'
+                  +'<div class="col-sm-8 grid-margin">'
+                    +'<h2 class="font-weight-600 mb-2">'
+                      +data[i].title+'</h2>'
+                      +'<p class="fs-13 text-muted mb-0">'
+                      +data[i].subtitle+'</p>'
+                  +'<p class="fs-15 article_p">'
+                +data[i].article_body+'</p></div></div></a>'
+        }
+        $("#article_list_sport div").html(html);
+      }
+    });
+  }
+</script>
