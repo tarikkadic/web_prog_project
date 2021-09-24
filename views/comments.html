@@ -2,12 +2,12 @@
   <div class="container">
     <div class="col-sm-12">
       <div class="card" data-aos="fade-up">
-        <div class="col-sm-12">
-          <form class="active-users" style="margin-top: 10px;" type="form">
+        <div class="active-users" class="col-sm-12">
+          <form  style="margin-top: 10px;" type="form">
             <textarea id="comment-body" style="width: 100%;" name="comment" rows="3" placeholder="Comment"></textarea>
             <button style="width: 100%;" type="button" class="btn btn-primary stick-right" onclick="post_comment();">Post comment</button>
           </form>
-        </div><hr style="height: 0px; border: none; border-top: 1px solid black;">
+        </div><hr class="active-users" style="height: 0px; border: none; border-top: 1px solid black;">
         <div id="article_comments" class="card-body">
           <div>
             <div class="col-sm-12">
@@ -25,9 +25,6 @@
   var article_id = u.searchParams.get("article_id");
   getComments(article_id);
   var user_info = parse_jwt(window.localStorage.getItem("token"));
-  if(user_info.s == "SUSPENDED"){
-    $(".active-users").remove();
-  }
 
 
   function getComments(article_id){
@@ -46,6 +43,9 @@
         }
 
         $("#article_comments div").html(html);
+        if(localStorage.length == 0 || user_info.s == "SUSPENDED"){
+          $(".active-users").remove();
+        }
       }
     });
   }
@@ -84,5 +84,7 @@
       }
     });
   }
+
+
 
 </script>

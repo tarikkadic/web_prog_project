@@ -33,9 +33,10 @@
         console.log();
         var html = "";
         for(var i = 0; i < data.length; i++){
-          html += '<div class="row article_box">'
+          html += '<a style="text-decoration: none;" href="?article_id='+data[i].id+'#article"><div class="row article_box" >'
                   +'<div class="col-sm-4 grid-margin">'
                   +'<div class="rotate-img">'
+                    +'<img src="'+data[i].image+'" alt="thumb" class="img-fluid"/>'
                   +'</div>'
                   +'</div>'
                   +'<div class="col-sm-8 grid-margin">'
@@ -44,7 +45,7 @@
                       +'<p class="fs-13 text-muted mb-0">'
                       +data[i].subtitle+'</p>'
                   +'<p class="fs-15 article_p">'
-                +data[i].article_body+'</p></div></div>'
+                +data[i].article_body+'</p></div></div></a>'
         }
         $("#article_list_art div").html(html);
       }

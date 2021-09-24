@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./vendors/aos/dist/aos.css/aos.css" />
 
     <!-- End plugin css for this page -->
-    <link rel="shortcut icon" href="./assets/images/favicon.png" />
+    <link rel="shortcut icon" href="./assets/images/logo.png" />
 
     <link rel="stylesheet" href="./assets/css/jQuerySPApp.css">
 
@@ -161,7 +161,9 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- End custom js for this page-->
-
+    <script src="./assets/js/jquery.easeScroll.js"></script>
+    <!-- End custom js for this page-->
+    <script src="//cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="./assets/js/jQuerySPApp.js"></script>
 
 
@@ -191,8 +193,6 @@
             $("#login_link").prop('disabled', false);
             toastr.error(error.responseJSON.message);
           });
-
-          console.log(login_info);
         }
 
         function showForgotForm(){
@@ -233,7 +233,6 @@
             toastr.error(error.responseJSON.message);
             });
       }
-
     </script>
 
   </body>

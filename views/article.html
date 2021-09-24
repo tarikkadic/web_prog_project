@@ -66,20 +66,21 @@
   var u = new URL(window.location.href);
   var article_id = u.searchParams.get("article_id");
   getArticle(article_id);
+  if(localStorage.length != 0){
   var user_info = parse_jwt(window.localStorage.getItem("token"));
-  if(user_info.r != "ADMIN"){
+}
+  if(localStorage.length == 0 || user_info.r != "ADMIN"){
     $('.admin-stuff').remove();
   }
+
 
   $("#update-article-modal").validate({
     submitHandler: function(form, event){
       console.log(article_id);
       event.preventDefault();
       console.log(jsonize_form($(form)));
-      updateArticle(jsonize_form($(form)), parseInt(article_id));
-      console.log(3);
+      updateArticle(jsonize_form($(form)), article_id);
       $('#article-update-modal').modal('toggle');
-      console.log(3);
     }
   });
 
@@ -116,16 +117,13 @@
 
   function updateArticle(article, article_id){
     $.ajax({
-      url: "api/articles/"+article_id,
-      type: "PUT",
+      url: "api/articlex/"+article_id,
+      type: "POST",
       data: article,
       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
       success: function(data){
-        console.log(4);
         toastr.success("Article has been updated!");
-        console.log(5);
         location.reload();
-        console.log(6);
       },
       error: function(jqXHR, textStatus, errorThrown){
         console.log(jqXHR);

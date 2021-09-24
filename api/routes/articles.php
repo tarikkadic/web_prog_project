@@ -54,6 +54,12 @@ Flight::route('POST /articles', function(){
  */
 Flight::route('PUT /articles/@id', function($id){
   $data = Flight::request()->data->getData();
+  print_r($data);die;
+  Flight::json(Flight::articleService()->update($id, $data));
+});
+
+Flight::route('POST /articlex/@id', function($id){
+  $data = Flight::request()->data->getData();
   Flight::json(Flight::articleService()->update($id, $data));
 });
 

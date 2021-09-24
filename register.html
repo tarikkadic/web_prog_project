@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./vendors/aos/dist/aos.css/aos.css" />
 
     <!-- End plugin css for this page -->
-    <link rel="shortcut icon" href="./assets/images/favicon.png" />
+    <link rel="shortcut icon" href="./assets/images/logo.png" />
 
     <link rel="stylesheet" href="./assets/css/jQuerySPApp.css">
 
@@ -165,6 +165,7 @@
       $("#register-link").prop('disabled', true);
       $.post("http://localhost/project/api/register", jsonize_form('#register-form')).done(function( data ){
         window.location = "index.html";
+        toastr.success("Email link sent!");
       }).fail(function(error){
         $("#register-link").prop('disabled', false);
         console.log(error);

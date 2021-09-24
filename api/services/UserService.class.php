@@ -64,7 +64,7 @@ public function login($user){
 
   if(!isset($db_user['id'])) throw new Exception("User doesn't exist!", 400);
 
-  if($db_user['user_status'] != 'ACTIVE') throw new Exception("Account not active!", 400);
+  if($db_user['user_status'] == 'PENDING') throw new Exception("Account not active!", 400);
 
   if($db_user['password'] != md5($user['password'])) throw new Exception("Invalid password!", 400);
 
